@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Friday: Puzzles & Riddles Quiz</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#F0EEFF 0%,#E8F4FF 100%);color:#1A1A2E;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.wrap{width:100%;max-width:560px}
+.scr{display:none;animation:fadeIn .25s ease}.scr.on{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0)}60%{opacity:1;transform:translateY(-14px) scale(1.1)}100%{opacity:0;transform:translateY(-28px) scale(.9)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card{background:#fff;border:1px solid #DDD6FE;border-radius:16px;padding:1.25rem;box-shadow:0 2px 12px rgba(109,77,237,.08)}
+.opt{width:100%;display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:9px;background:#FAFAFF;border:1.5px solid #DDD6FE;border-radius:10px;cursor:pointer;text-align:left;font-size:15px;color:#1A1A2E;font-family:inherit;font-weight:400;transition:background .12s,border-color .15s,transform .1s}
+.opt:hover:not([disabled]){background:#EDE9FE;border-color:#7C3AED;transform:translateX(3px)}
+.opt[disabled]{cursor:default;transform:none}
+.opt.ok{background:#DCFCE7;border-color:#16A34A;color:#166534}
+.opt.no{background:#FEE2E2;border-color:#DC2626;color:#991B1B}
+.opt.dim{opacity:.3}
+.lbl{width:26px;height:26px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:#EDE9FE;border:1px solid #DDD6FE;color:#7C3AED}
+.opt.ok .lbl{background:#DCFCE7;border-color:#16A34A;color:#166534}
+.opt.no .lbl{background:#FEE2E2;border-color:#DC2626;color:#991B1B}
+.t-track{height:6px;background:#EDE9FE;border-radius:4px;overflow:hidden}
+.t-fill{height:100%;border-radius:4px;transition:width 1s linear}
+.p-track{height:4px;background:#EDE9FE;border-radius:4px;overflow:hidden;margin-bottom:14px}
+.p-fill{height:100%;background:#7C3AED;border-radius:4px;transition:width .35s}
+.fact{background:#EDE9FE;border:1px solid #DDD6FE;border-radius:10px;padding:12px 14px;font-size:13px;color:#4C1D95;margin-top:10px;animation:fadeIn .25s ease;line-height:1.6}
+.pop{position:absolute;right:0;top:-20px;font-size:13px;font-weight:700;color:#7C3AED;animation:floatUp 1.5s forwards;pointer-events:none;white-space:nowrap}
+.dot{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin:3px}
+.btn-main{background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff;border:none;border-radius:50px;padding:13px 28px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.03em;transition:opacity .15s,transform .1s;box-shadow:0 4px 15px rgba(109,40,217,.3)}
+.btn-main:hover{opacity:.9;transform:scale(1.02)}
+.muted{color:#6B7280;font-size:13px}
+.purple{color:#7C3AED;font-weight:700}
+.icon-box{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border:1px solid #C4B5FD;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:32px;box-shadow:0 4px 15px rgba(109,40,217,.15)}
+.tag{display:inline-block;font-size:11px;letter-spacing:.12em;color:#7C3AED;text-transform:uppercase;margin-bottom:8px;background:#EDE9FE;padding:3px 10px;border-radius:20px}
+input[type=text]{width:100%;background:#fff;border:1.5px solid #DDD6FE;border-radius:10px;padding:13px 16px;font-size:15px;color:#1A1A2E;font-family:inherit;outline:none;transition:border-color .15s;margin-bottom:12px;box-shadow:0 1px 4px rgba(109,40,217,.06)}
+input[type=text]:focus{border-color:#7C3AED;box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+input[type=text]::placeholder{color:#9CA3AF}
+.spinner{width:14px;height:14px;border:2px solid #DDD6FE;border-top-color:#7C3AED;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px}
+.score-chip{background:#EDE9FE;color:#7C3AED;border-radius:20px;padding:4px 12px;font-size:14px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="s-done" class="scr">
+  <div style="text-align:center;padding:3rem 1rem">
+    <div class="icon-box">🔒</div>
+    <div class="tag">Fun Friday Quiz</div>
+    <h2 style="font-size:22px;font-weight:800;margin-bottom:12px;margin-top:12px">Already Submitted!</h2>
+    <p class="muted" style="line-height:1.8">You have already completed this week's quiz.<br>Your score has been sent to HR.<br><br>Only one attempt is allowed per person.</p>
+  </div>
+</div>
+
+<div id="s-i" class="scr on">
+  <div style="text-align:center;padding:2.5rem 1rem">
+    <div class="icon-box">🧩</div>
+    <div class="tag">Fun Friday · Week 2</div>
+    <h1 style="font-size:30px;font-weight:800;line-height:1.15;margin:12px 0 10px;color:#1A1A2E">Puzzles & Riddles ⚡</h1>
+    <p class="muted" style="line-height:1.75;margin-bottom:24px">10 questions · 30 sec each · <span class="purple">1 point</span> per correct answer<br>Everyone gets a different random set of questions!<br>Your score is automatically sent to HR.</p>
+    <input type="text" id="pname" placeholder="Your name…" maxlength="50" />
+    <input type="text" id="pemail" placeholder="Your work email…" maxlength="100" />
+    <button class="btn-main" id="start-btn">🧠 Start Quiz</button>
+    <p class="muted" style="margin-top:14px;font-size:12px">🔀 Picking 10 from a pool of 25 questions</p>
+  </div>
+</div>
+
+<div id="s-q" class="scr">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span class="muted" id="ctr">Q 1 / 10</span>
+    <div style="position:relative"><span class="score-chip" id="sc">0 / 10</span></div>
+  </div>
+  <div class="p-track"><div id="pg" class="p-fill" style="width:10%"></div></div>
+  <div class="card" style="margin-bottom:12px;min-height:80px;display:flex;align-items:center">
+    <p id="qtxt" style="font-size:17px;font-weight:600;line-height:1.45;color:#1A1A2E"></p>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+    <div class="t-track" style="flex:1"><div id="tf" class="t-fill" style="width:100%;background:#7C3AED"></div></div>
+    <span id="tc" style="font-size:13px;font-weight:700;min-width:32px;text-align:right;color:#6B7280">30s</span>
+  </div>
+  <div id="opts"></div>
+  <div id="fb" style="display:none"></div>
+  <div id="next-wrap" style="display:none;text-align:center;margin-top:16px">
+    <button class="btn-main" id="next-btn">Next question →</button>
+  </div>
+</div>
+
+<div id="s-r" class="scr">
+  <div style="text-align:center;padding:2rem 1rem">
+    <div class="icon-box" id="ricon" style="font-size:32px"></div>
+    <h2 id="rlbl" style="font-size:22px;font-weight:800;margin-bottom:6px;margin-top:12px;color:#1A1A2E"></h2>
+    <p id="rdesc" class="muted" style="margin-bottom:20px;line-height:1.6"></p>
+    <div class="card" style="margin-bottom:16px;text-align:left">
+      <div style="text-align:center;margin-bottom:4px">
+        <div id="plbl" style="font-size:13px;color:#6B7280;margin-bottom:8px"></div>
+        <div id="fs" style="font-size:44px;font-weight:800;color:#7C3AED"></div>
+        <div class="muted" style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:4px">correct answers</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;border-top:1px solid #EDE9FE;padding-top:14px;margin-top:14px">
+        <div style="text-align:center"><div id="rok" style="font-size:26px;font-weight:800;color:#16A34A"></div><div class="muted" style="font-size:11px;margin-top:2px">Correct</div></div>
+        <div style="text-align:center"><div id="rno" style="font-size:26px;font-weight:800;color:#DC2626"></div><div class="muted" style="font-size:11px;margin-top:2px">Wrong</div></div>
+        <div style="text-align:center"><div id="rpct" style="font-size:26px;font-weight:800;color:#1A1A2E"></div><div class="muted" style="font-size:11px;margin-top:2px">Accuracy</div></div>
+      </div>
+    </div>
+    <div id="dots" style="margin-bottom:16px"></div>
+    <p id="send-status" style="font-size:13px;color:#6B7280;line-height:1.7;margin-top:4px"></p>
+  </div>
+</div>
+
+</div>
+<script>
+var EJS_KEY     = 't8zaedVX6wFwURUVT';
+var EJS_SERVICE = 'service_fk9ah69';
+var EJS_TMPL    = 'template_5hxfsuf';
+var AT_TOKEN    = 'patv9xZk9SfFbGY9Y.c61331d25fffc31dd198507ded1289a98e8ebf4707abc1504de75f1b21694e58';
+var AT_BASE     = 'app94kDC0O47m8736';
+var AT_TABLE    = 'Results';
+var DONE_KEY    = 'riddles2026_done';
+
+var QS_POOL=[
+  {q:"I have cities but no houses, forests but no trees, rivers but no water. What am I?",opts:["A dream","A map","A painting","A book"],a:1,fact:"A map shows cities, forests and rivers as symbols — none of them are real!"},
+  {q:"The more you take, the more you leave behind. What am I?",opts:["Memories","Time","Footsteps","Money"],a:2,fact:"Every step you take leaves a footprint behind!"},
+  {q:"I speak without a mouth and hear without ears. I have no body but come alive with wind. What am I?",opts:["A ghost","An echo","A whistle","A shadow"],a:1,fact:"An echo reflects your voice back without any physical form!"},
+  {q:"What has hands but can't clap?",opts:["A glove","A clock","A statue","A puppet"],a:1,fact:"A clock has hour, minute and second hands — but they can never clap!"},
+  {q:"What gets wetter as it dries?",opts:["A sponge","A cloud","A towel","A fish"],a:2,fact:"A towel absorbs more water as it dries you off!"},
+  {q:"What can travel around the world while staying in a corner?",opts:["A thought","A rumour","A shadow","A stamp"],a:3,fact:"A stamp always sits in the corner of an envelope as it travels the world!"},
+  {q:"What has one eye but cannot see?",opts:["A storm","A needle","A potato","A button"],a:1,fact:"A needle has an eye (the hole for thread) but cannot see!"},
+  {q:"What comes once in a minute, twice in a moment, but never in a thousand years?",opts:["A blink","A heartbeat","The letter M","A second"],a:2,fact:"The letter M: once in 'minute', twice in 'moment', never in 'a thousand years'!"},
+  {q:"What has teeth but can't bite?",opts:["A saw","A comb","A zipper","A key"],a:1,fact:"A comb has teeth to separate hair but can never bite!"},
+  {q:"I'm light as a feather yet the strongest person can't hold me for minutes. What am I?",opts:["A thought","Breath","A cloud","Smoke"],a:1,fact:"You cannot hold your breath for more than a few minutes no matter how strong you are!"},
+  {q:"The more you remove from me, the bigger I become. What am I?",opts:["A debt","A hole","A secret","A shadow"],a:1,fact:"The more dirt you remove from a hole, the bigger it gets!"},
+  {q:"What has a neck but no head?",opts:["A shirt","A bottle","A guitar","A swan"],a:1,fact:"A bottle has a neck at the top but nothing above it!"},
+  {q:"What runs but never walks, has a mouth but never talks?",opts:["A clock","A river","A train","A phone"],a:1,fact:"A river runs, has a mouth (where it meets the sea) but never walks or talks!"},
+  {q:"What can you catch but not throw?",opts:["A wave","A cold","A ball","A fish"],a:1,fact:"You can catch a cold but you can't throw one at someone!"},
+  {q:"I have keys but no locks, space but no room. You can enter but can't go inside. What am I?",opts:["A piano","A safe","A keyboard","A map"],a:2,fact:"A keyboard has keys, a space bar and an enter key — but no physical locks or rooms!"},
+  {q:"What has 13 hearts but no other organs?",opts:["A hospital","A deck of cards","An octopus","A love letter"],a:1,fact:"A standard deck of cards has 13 hearts — Ace through King!"},
+  {q:"What goes up but never comes down?",opts:["Prices","Your age","The sun","A balloon"],a:1,fact:"Your age only ever increases — you can never get younger!"},
+  {q:"What is always in front of you but can't be seen?",opts:["The present","The future","Your blind spot","Air"],a:1,fact:"The future is always ahead of you but completely impossible to see!"},
+  {q:"What has 4 legs in the morning, 2 at noon and 3 in the evening?",opts:["A chair","A dog","A human","A spider"],a:2,fact:"The Riddle of the Sphinx! Humans crawl (4), walk (2), then use a cane (3) in old age!"},
+  {q:"What word is spelled incorrectly in every dictionary?",opts:["Wrong","Misspelled","Incorrectly","Error"],a:2,fact:"The word 'incorrectly' is always spelled i-n-c-o-r-r-e-c-t-l-y — that IS correct!"},
+  {q:"A rooster sits on top of a roof. Which way does the egg roll?",opts:["Left","Right","Straight down","Roosters don't lay eggs"],a:3,fact:"Roosters are male — they don't lay eggs! Classic trick question!"},
+  {q:"If you have 3 apples and take away 2, how many do you have?",opts:["1","2","3","5"],a:1,fact:"You TOOK 2 apples — so YOU have 2. The pile has 1 left but you're holding 2!"},
+  {q:"I'm tall when I'm young and short when I'm old. What am I?",opts:["A tree","A candle","A person","A mountain"],a:1,fact:"A candle starts tall and gets shorter as it burns — the opposite of people!"},
+  {q:"What building has the most stories?",opts:["A library","A skyscraper","A hospital","A school"],a:0,fact:"A library has the most stories — thousands of books each with a different story!"},
+  {q:"What is next in this sequence: 1, 1, 2, 3, 5, 8, ___?",opts:["10","12","13","15"],a:2,fact:"This is the Fibonacci sequence — each number is the sum of the two before it! 5+8=13."}
+];
+
+function shuffle(arr){var a=[...arr];for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var T=30,LB=["A","B","C","D"];
+var qi=0,sc=0,tl=0,ti=null,done=false,log=[],pname='',pemail='',selectedQs=[],startTime=0;
+function $(id){return document.getElementById(id);}
+function show(s){document.querySelectorAll('.scr').forEach(function(e){e.classList.remove('on');});$('s-'+s).classList.add('on');}
+
+window.addEventListener('load',function(){
+  try{emailjs.init(EJS_KEY);}catch(e){console.warn('EJS init:',e);}
+  try{if(localStorage.getItem(DONE_KEY)){show('done');}}catch(e){}
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  $('start-btn').addEventListener('click',function(){go();});
+  $('next-btn').addEventListener('click',function(){nextQ();});
+});
+
+function go(){
+  var n=$('pname').value.trim();
+  var e=$('pemail').value.trim();
+  if(!n){$('pname').style.borderColor='#DC2626';$('pname').focus();return;}
+  if(!e||e.indexOf('@')<0){$('pemail').style.borderColor='#DC2626';$('pemail').focus();return;}
+  $('pname').style.borderColor='#DDD6FE';$('pemail').style.borderColor='#DDD6FE';
+  pname=n;pemail=e;
+  selectedQs=shuffle([...QS_POOL]).slice(0,10);
+  qi=0;sc=0;log=[];startTime=Date.now();
+  show('q');load();
+}
+
+function load(){
+  done=false;tl=T;
+  var q=selectedQs[qi];
+  $('ctr').textContent='Q '+(qi+1)+' / '+selectedQs.length;
+  $('qtxt').textContent=q.q;
+  $('fb').style.display='none';
+  $('next-wrap').style.display='none';
+  $('pg').style.width=Math.round((qi+1)/selectedQs.length*100)+'%';
+  var c=$('opts');c.innerHTML='';
+  q.opts.forEach(function(o,i){
+    var b=document.createElement('button');
+    b.className='opt';
+    b.innerHTML='<span class="lbl">'+LB[i]+'</span><span style="flex:1">'+o+'</span>';
+    b.addEventListener('click',function(){ans(i);});
+    c.appendChild(b);
+  });
+  startTimer();
+}
+
+function startTimer(){clearInterval(ti);upd();ti=setInterval(function(){tl--;upd();if(tl<=0){clearInterval(ti);ans(-1);}},1000);}
+
+function upd(){
+  var p=Math.max(0,tl/T*100);
+  $('tf').style.width=p+'%';
+  $('tf').style.background=tl>20?'#7C3AED':tl>10?'#F59E0B':'#EF4444';
+  $('tc').textContent=Math.max(0,tl)+'s';
+}
+
+function ans(idx){
+  if(done)return;done=true;clearInterval(ti);
+  var q=selectedQs[qi];
+  var ok=idx===q.a;
+  if(ok){sc++;flash();}
+  log.push({ok:ok,chosen:idx});
+  $('sc').textContent=sc+' / 10';
+  document.querySelectorAll('.opt').forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.a)b.classList.add('ok');
+    else if(i===idx&&i!==q.a)b.classList.add('no');
+    else b.classList.add('dim');
+  });
+  var fb=$('fb');fb.innerHTML='💡 '+q.fact;fb.className='fact';fb.style.display='block';
+  var isLast=qi+1>=selectedQs.length;
+  $('next-btn').textContent=isLast?'See my results →':'Next question →';
+  $('next-wrap').style.display='block';
+}
+
+function nextQ(){
+  $('next-wrap').style.display='none';
+  if(qi+1<selectedQs.length){qi++;load();}else{showResult();}
+}
+
+function flash(){
+  var el=document.createElement('span');el.className='pop';el.textContent='+1 point';
+  $('sc').parentElement.appendChild(el);
+  setTimeout(function(){if(el.parentElement)el.parentElement.removeChild(el);},1600);
+}
+
+function showResult(){
+  var ok=log.filter(function(l){return l.ok;}).length;
+  var pct=Math.round(ok/selectedQs.length*100);
+  var elapsed=Date.now()-startTime;
+  var mins=Math.floor(elapsed/60000);
+  var secs=Math.floor((elapsed%60000)/1000);
+  var duration=mins>0?(mins+'m '+secs+'s'):(secs+'s');
+  var tiers=[[10,'🏆','Puzzle Master!','Perfect score — you have a brilliant mind!'],[8,'🧠','Sharp Thinker!','Outstanding — riddles are no match for you!'],[6,'🎯','Quick Wit!','Nice work — you think fast on your feet!'],[4,'👍','Getting There!','A few tricky ones but good effort!'],[0,'🧩','Keep Puzzling!','Riddles are tough — keep at it!']];
+  var t=tiers.filter(function(x){return ok>=x[0];})[0];
+  $('ricon').textContent=t[1];$('rlbl').textContent=t[2];$('rdesc').textContent=t[3];
+  $('plbl').textContent='🙋 '+pname;
+  $('fs').textContent=ok+' / 10';
+  $('rok').textContent=ok;$('rno').textContent=selectedQs.length-ok;$('rpct').textContent=pct+'%';
+  $('dots').innerHTML=log.map(function(l,i){return '<div class="dot" style="background:'+(l.ok?'#16A34A':'#DC2626')+'">'+(i+1)+'</div>';}).join('');
+  show('r');
+  $('send-status').innerHTML='<span class="spinner"></span> Saving your results…';
+  submitResults(ok,pct,duration);
+}
+
+function submitResults(ok,pct,duration){
+  var breakdown=log.map(function(l,i){return 'Q'+(i+1)+(l.ok?' ✓':' ✗');}).join(' ');
+  var wrongs=log.map(function(l,i){
+    if(l.ok)return null;
+    var q=selectedQs[i];
+    var y=l.chosen>=0?q.opts[l.chosen]:'Timed out';
+    return 'Q'+(i+1)+': "'+y+'" → correct: "'+q.opts[q.a]+'"';
+  }).filter(Boolean).join(' | ')||'None';
+
+  // Send email via EmailJS
+  emailjs.send(EJS_SERVICE, EJS_TMPL, {
+    player_name:  pname,
+    player_email: pemail,
+    score:        ok+' / 10',
+    accuracy:     pct+'%',
+    duration:     duration,
+    breakdown:    breakdown,
+    wrong_answers:wrongs,
+    reply_to:     pemail,
+    from_name:    pname
+  }).then(function(){
+    console.log('Email: sent!');
+  }).catch(function(e){console.error('EmailJS error:',e);});
+
+  // Save to Airtable FIRST, then show result
+  fetch('https://api.airtable.com/v0/'+AT_BASE+'/'+encodeURIComponent(AT_TABLE),{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+AT_TOKEN,'Content-Type':'application/json'},
+    body:JSON.stringify({records:[{fields:{Name:pname,Email:pemail,Score:ok,Duration:duration}}]})
+  }).then(function(r){
+    if(!r.ok){return r.json().then(function(d){throw new Error(d.error?d.error.message:'HTTP '+r.status);});}
+    try{localStorage.setItem(DONE_KEY,'1');}catch(e){}
+    $('send-status').textContent='✅ Score saved! You will appear on the leaderboard shortly.';
+  }).catch(function(e){
+    $('send-status').innerHTML='⚠️ Airtable error: '+e.message+'<br>Please screenshot this and send to HR.';
+  });
+}
+</script>
+</body>
+</html>
