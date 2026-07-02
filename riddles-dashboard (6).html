@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Friday — Combined Leaderboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F5F3FF;min-height:100vh;color:#1A2B3C}
+.header{background:linear-gradient(135deg,#4C1D95,#7C3AED);color:#fff;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.header h1{font-size:18px;font-weight:700}
+.btn{background:#fff;color:#7C3AED;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer}
+.btn:hover{opacity:.85}.btn:disabled{opacity:.5;cursor:default}
+.upd{font-size:12px;color:#C4B5FD}
+.main{max-width:1100px;margin:0 auto;padding:1.5rem 1rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.5rem}
+.sc{background:#fff;border-radius:12px;padding:1rem 1.25rem;border:1px solid #EDE9FE;box-shadow:0 2px 8px rgba(109,40,217,.06)}
+.sv{font-size:26px;font-weight:800;line-height:1}
+.sl{font-size:11px;color:#9CA3AF;margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+.tw{background:#fff;border-radius:12px;border:1px solid #EDE9FE;overflow:hidden;box-shadow:0 2px 8px rgba(109,40,217,.06)}
+.th{padding:1rem 1.25rem;border-bottom:1px solid #EDE9FE;display:flex;align-items:center;justify-content:space-between}
+.th h2{font-size:15px;font-weight:700;color:#4C1D95}
+.filters{display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
+.filter-btn{padding:6px 16px;border-radius:20px;border:1.5px solid #EDE9FE;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#6B7280;transition:all .15s;font-family:inherit}
+.filter-btn.active{background:#7C3AED;color:#fff;border-color:#7C3AED}
+table{width:100%;border-collapse:collapse}
+th{background:#F5F3FF;padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid #EDE9FE}
+td{padding:11px 14px;font-size:14px;border-bottom:1px solid #F5F3FF;color:#1A2B3C}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#F5F3FF}
+.pill{display:inline-flex;border-radius:20px;padding:3px 10px;font-weight:700;font-size:12px}
+.pp{background:#EDE9FE;color:#5B21B6}.pg{background:#DCFCE7;color:#166534}
+.pa{background:#FEF9C3;color:#854D0E}.pr{background:#FEE2E2;color:#991B1B}
+.quiz-badge{display:inline-flex;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700}
+.qb-riddles{background:#EDE9FE;color:#5B21B6}
+.qb-music{background:#FCE7F3;color:#9D174D}
+.qb-other{background:#F3F4F6;color:#374151}
+.msg{text-align:center;padding:3rem;color:#9CA3AF;font-size:14px}
+.err{background:#FEE2E2;color:#991B1B;border-radius:8px;padding:1.25rem;margin:1rem;font-size:13px;line-height:1.7}
+code{background:#EDE9FE;padding:2px 7px;border-radius:4px;font-size:12px;color:#5B21B6}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🏆 Fun Friday — Combined Leaderboard</h1>
+  <div style="display:flex;align-items:center;gap:14px">
+    <span class="upd" id="upd"></span>
+    <button class="btn" id="rbtn" onclick="loadData()">↻ Refresh</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="stats">
+    <div class="sc"><div class="sv" id="s-total" style="color:#7C3AED">—</div><div class="sl">Total Players</div></div>
+    <div class="sc"><div class="sv" id="s-top" style="color:#F59E0B">—</div><div class="sl">Top Score</div></div>
+    <div class="sc"><div class="sv" id="s-avg" style="color:#16A34A">—</div><div class="sl">Avg Score</div></div>
+    <div class="sc"><div class="sv" id="s-perfect" style="color:#EC4899">—</div><div class="sl">Perfect 10s</div></div>
+    <div class="sc"><div class="sv" id="s-riddles" style="color:#5B21B6">—</div><div class="sl">🧩 Riddles</div></div>
+    <div class="sc"><div class="sv" id="s-music" style="color:#9D174D">—</div><div class="sl">🎵 Music</div></div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">All Quizzes</button>
+    <button class="filter-btn" onclick="setFilter('Riddles',this)">🧩 Riddles Only</button>
+    <button class="filter-btn" onclick="setFilter('Music',this)">🎵 Music Only</button>
+  </div>
+
+  <div class="tw">
+    <div class="th">
+      <h2>Leaderboard</h2>
+      <span style="font-size:12px;color:#9CA3AF">Sorted by score · auto-updates every 10s</span>
+    </div>
+    <div id="tbody"><div class="msg">Loading results…</div></div>
+  </div>
+</div>
+
+<script>
+var AT_TOKEN = 'patv9xZk9SfFbGY9Y.c61331d25fffc31dd198507ded1289a98e8ebf4707abc1504de75f1b21694e58';
+var AT_BASE  = 'app94kDC0O47m8736';
+var AT_TABLE = 'Results';
+var allRecords = [];
+var currentFilter = 'all';
+
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderTable(allRecords);
+}
+
+function loadData(){
+  var btn=document.getElementById('rbtn'),body=document.getElementById('tbody');
+  btn.disabled=true;btn.textContent='Loading…';
+  fetch('https://api.airtable.com/v0/'+AT_BASE+'/'+encodeURIComponent(AT_TABLE)+'?sort%5B0%5D%5Bfield%5D=Score&sort%5B0%5D%5Bdirection%5D=desc&pageSize=100',{
+    headers:{'Authorization':'Bearer '+AT_TOKEN}
+  }).then(function(r){
+    if(!r.ok)return r.json().then(function(e){throw new Error((e.error&&e.error.message)||'HTTP '+r.status);});
+    return r.json();
+  }).then(function(d){
+    allRecords=d.records||[];
+    renderStats(allRecords);
+    renderTable(allRecords);
+    document.getElementById('upd').textContent='Updated '+new Date().toLocaleTimeString();
+  }).catch(function(e){
+    body.innerHTML='<div class="err"><strong>Could not load.</strong> '+e.message+'<br><br>Make sure the <code>Results</code> table has a <code>Quiz</code> column (Single line text).</div>';
+  }).finally(function(){btn.disabled=false;btn.textContent='↻ Refresh';});
+}
+
+function renderStats(records){
+  var riddles=records.filter(function(r){return r.fields.Quiz==='Riddles';});
+  var music=records.filter(function(r){return r.fields.Quiz==='Music';});
+  var scores=records.map(function(r){return Number(r.fields.Score)||0;});
+  document.getElementById('s-total').textContent=records.length;
+  document.getElementById('s-top').textContent=records.length?Math.max.apply(null,scores)+' / 10':'—';
+  document.getElementById('s-avg').textContent=records.length?(scores.reduce(function(a,b){return a+b;},0)/scores.length).toFixed(1):'—';
+  document.getElementById('s-perfect').textContent=scores.filter(function(s){return s===10;}).length;
+  document.getElementById('s-riddles').textContent=riddles.length;
+  document.getElementById('s-music').textContent=music.length;
+}
+
+function renderTable(records){
+  var filtered=currentFilter==='all'?records:records.filter(function(r){return r.fields.Quiz===currentFilter;});
+  filtered.sort(function(a,b){return (Number(b.fields.Score)||0)-(Number(a.fields.Score)||0);});
+  var body=document.getElementById('tbody');
+  if(!filtered.length){
+    body.innerHTML='<div class="msg">No submissions yet for this filter. Share the quiz link with your team!</div>';
+    return;
+  }
+  var medals=['🥇','🥈','🥉'];
+  var rows=filtered.map(function(r,i){
+    var f=r.fields,score=Number(f.Score)||0;
+    var pc=score>=8?'pp':score>=6?'pg':score>=4?'pa':'pr';
+    var rank=i<3?medals[i]+' '+(i+1):(i+1);
+    var sub=r.createdTime?new Date(r.createdTime).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+    var quiz=f.Quiz||'—';
+    var qbClass=quiz==='Riddles'?'qb-riddles':quiz==='Music'?'qb-music':'qb-other';
+    var qbIcon=quiz==='Riddles'?'🧩':quiz==='Music'?'🎵':'';
+    return '<tr>'+
+      '<td style="font-weight:700;font-size:13px;color:#9CA3AF">'+rank+'</td>'+
+      '<td><strong style="font-weight:600">'+esc(f.Name||'—')+'</strong></td>'+
+      '<td style="color:#6B7280;font-size:13px">'+esc(f.Email||'—')+'</td>'+
+      '<td><span class="quiz-badge '+qbClass+'">'+qbIcon+' '+quiz+'</span></td>'+
+      '<td><span class="pill '+pc+'">'+score+' / 10</span></td>'+
+      '<td style="color:#6B7280;font-size:13px">'+esc(f.Duration||'—')+'</td>'+
+      '<td style="color:#6B7280;font-size:13px">'+sub+'</td></tr>';
+  }).join('');
+  body.innerHTML='<table><thead><tr><th>Rank</th><th>Name</th><th>Email</th><th>Quiz</th><th>Score</th><th>Time</th><th>Submitted At</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+loadData();
+setInterval(loadData,10000);
+</script>
+</body>
+</html>
