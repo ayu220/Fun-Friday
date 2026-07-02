@@ -309,7 +309,7 @@ function submitResults(ok,pct,duration){
   fetch('https://api.airtable.com/v0/'+AT_BASE+'/'+encodeURIComponent(AT_TABLE),{
     method:'POST',
     headers:{'Authorization':'Bearer '+AT_TOKEN,'Content-Type':'application/json'},
-    body:JSON.stringify({records:[{fields:{Name:pname,Email:pemail,Score:ok,Duration:String(duration)}}]})
+    body:JSON.stringify({records:[{fields:{Name:pname,Email:pemail,Score:ok,Duration:String(duration),Quiz:'Riddles'}}]})
   }).then(function(r){
     if(!r.ok){return r.json().then(function(d){throw new Error(d.error?d.error.message:'HTTP '+r.status);});}
     try{localStorage.setItem(DONE_KEY,'1');}catch(e){}
