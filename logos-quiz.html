@@ -440,54 +440,34 @@ function bigConfetti(){
 }
 
 /* ── QUIZ FLOW ── */
-async function startQuiz(){
+function startQuiz(){
   playerName  = document.getElementById('inp-name').value.trim();
   playerEmail = document.getElementById('inp-email').value.trim().toLowerCase();
 
   if(!playerName){ alert('Please enter your name.'); return; }
-  if(!playerEmail){ alert('Work email is required to ensure one submission per person.'); return; }
+  if(!playerEmail){ alert('Work email is required.'); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(playerEmail)){ alert('Please enter a valid email address.'); return; }
 
-  // Check localStorage first (same device)
+  // Check localStorage (same device/browser)
   const saved = localStorage.getItem(STORAGE_KEY);
   if(saved){
-    const d=JSON.parse(saved);
-    document.getElementById('prev-score').textContent=d.score+'/10';
-    document.getElementById('prev-time').textContent='⏱ '+d.time;
+    const d = JSON.parse(saved);
+    document.getElementById('prev-score').textContent = d.score + '/10';
+    document.getElementById('prev-time').textContent  = '⏱ ' + d.time;
     show('s-already'); return;
   }
 
-  // Check Airtable for duplicate email BEFORE starting
-  const btn = document.querySelector('.btn-start');
-  btn.textContent = '⏳  Checking…'; btn.disabled = true;
-  try{
-    if(AIRTABLE_TOKEN !== 'YOUR_AIRTABLE_PAT_HERE'){
-      const res = await fetch(
-        `https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent(AIRTABLE_TABLE)}?filterByFormula=AND(LOWER({Email})="${playerEmail}",{Week}="${QUIZ_WEEK}")`,
-        {headers:{Authorization:'Bearer '+AIRTABLE_TOKEN}}
-      );
-      const data = await res.json();
-      if(data.records && data.records.length > 0){
-        const prev = data.records[0].fields;
-        document.getElementById('prev-score').textContent=(prev.Score||'?')+'/10';
-        document.getElementById('prev-time').textContent='⏱ '+(prev.Duration||'—');
-        show('s-already'); return;
-      }
-    }
-  } catch(e){ /* network issue — allow quiz to proceed */ }
-
-  btn.textContent = '🚀  Let\'s Go!'; btn.disabled = false;
-
+  // Start quiz immediately — duplicate check happens at submission
   show('s-quiz');
   buildDots();
-  startMs=Date.now();
-  timerInterval=setInterval(()=>{
-    elapsed=Math.floor((Date.now()-startMs)/1000);
-    const m=Math.floor(elapsed/60),s=elapsed%60;
+  startMs = Date.now();
+  timerInterval = setInterval(()=>{
+    elapsed = Math.floor((Date.now()-startMs)/1000);
+    const m=Math.floor(elapsed/60), s=elapsed%60;
     document.getElementById('timer-num').textContent=`${m}:${s.toString().padStart(2,'0')}`;
     const off=Math.min(elapsed*2,120);
     document.getElementById('timer-ring').style.strokeDashoffset=off;
-  },500);
+  }, 500);
   renderQ();
 }
 
