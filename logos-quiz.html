@@ -99,15 +99,15 @@ body{background:#0D0D1A;font-family:'Inter',sans-serif;min-height:100vh;display:
 
 <script>
 /* ── CONFIG ─────────────────────────────────────── */
-const AIRTABLE_TOKEN = 'patv9xZk9SfFbGY9Y.430aa381141aedc05aedae1f47c37aeaf0a2c27b614bccb74b0789c3024d0030';
+const AIRTABLE_TOKEN = 'YOUR_AIRTABLE_PAT_HERE';
 const AIRTABLE_BASE  = 'app94kDC0O47m8736';
 const AIRTABLE_TABLE = 'Results';
 const QUIZ_WEEK      = 'Week 4 - Logos & Brands';
-const STORAGE_KEY    = 'funfriday-logos-w4';
+const STORAGE_KEY    = 'funfriday-logos-w4-final';
 
 // ⏰ TIME RESTRICTION: change to true when sharing with employees
-// When true: quiz only opens 5:00 PM – 6:00 PM IST
-const TIME_RESTRICTED = false;
+// When true: quiz only opens 6:00 PM – 7:00 PM IST
+const TIME_RESTRICTED = true;
 
 /* ── QUESTIONS ──────────────────────────────────── */
 const QS = [
@@ -145,8 +145,7 @@ function renderWelcome(){
       <div class="rule"><em>⚡</em> Fastest correct score wins</div>
       <div class="rule"><em>⏱</em> Timer starts on Let's Go</div>
     </div>
-    <button class="btn-main" id="start-btn">🚀 &nbsp; Let's Go!</button>`;
-  document.getElementById('start-btn').addEventListener('click', startQuiz);
+    <button class="btn-main" onclick="startQuiz()">🚀 &nbsp; Let's Go!</button>`;
 }
 
 /* ── RENDER ALREADY SUBMITTED ───────────────────── */
@@ -307,14 +306,14 @@ function getIST(){
 }
 if(TIME_RESTRICTED){
   const ist=getIST(), h=ist.getHours(), m=ist.getMinutes(), tot=h*60+m;
-  if(tot < 17*60){
-    // Before 5 PM — show countdown
-    const open=new Date(ist); open.setHours(17,0,0,0);
+  if(tot < 18*60){
+    // Before 6 PM — show countdown
+    const open=new Date(ist); open.setHours(18,0,0,0);
     document.getElementById('app').innerHTML=`
       <div style="text-align:center;padding:16px 0">
         <div style="font-size:44px;margin-bottom:10px">⏰</div>
         <div style="font-size:19px;font-weight:800;color:#fff;margin-bottom:6px">Quiz Not Started Yet</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:16px">Opens at <span style="color:#FFC940;font-weight:700">5:00 PM – 6:00 PM IST</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:16px">Opens at <span style="color:#FFC940;font-weight:700">6:00 PM – 7:00 PM IST</span></div>
         <div style="background:rgba(255,201,64,.1);border:1px solid rgba(255,201,64,.3);border-radius:12px;padding:14px;margin-bottom:14px">
           <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Opens in</div>
           <div id="cd" style="font-size:30px;font-weight:900;color:#FFC940;font-variant-numeric:tabular-nums">--:--:--</div>
@@ -327,17 +326,17 @@ if(TIME_RESTRICTED){
       const el=document.getElementById('cd');
       if(el) el.textContent=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
     },1000);
-  } else if(tot >= 18*60){
-    // After 6 PM — closed
+  } else if(tot >= 19*60){
+    // After 7 PM — closed
     document.getElementById('app').innerHTML=`
       <div style="text-align:center;padding:16px 0">
         <div style="font-size:44px;margin-bottom:10px">🔒</div>
         <div style="font-size:19px;font-weight:800;color:#fff;margin-bottom:6px">Quiz Window Closed</div>
-        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px">The quiz was open from <span style="color:#FFC940;font-weight:700">5:00 – 6:00 PM IST</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px">The quiz was open from <span style="color:#FFC940;font-weight:700">6:00 – 7:00 PM IST</span></div>
         <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;font-size:11px;color:rgba(255,255,255,.4)">Check the dashboard for your results 🏆</div>
       </div>`;
   } else {
-    renderWelcome(); // Within 5–6 PM
+    renderWelcome(); // Within 6–7 PM
   }
 } else {
   renderWelcome(); // No restriction — open always
