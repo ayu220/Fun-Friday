@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Logos & Brands — Fun Friday Week 4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0D0D1A;font-family:'Inter',sans-serif;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px 12px}
+.card{background:#161B2E;border-radius:20px;width:100%;max-width:520px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06)}
+.hdr{background:linear-gradient(135deg,#1a1040,#251858 40%,#1a2744);padding:16px 20px 14px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06)}
+.week-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,201,64,.12);border:1px solid rgba(255,201,64,.3);border-radius:20px;padding:3px 12px;font-size:9.5px;font-weight:700;color:#FFC940;letter-spacing:.08em;margin-bottom:8px}
+.hdr-emoji{font-size:36px;display:block;margin-bottom:5px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.hdr h1{font-size:21px;font-weight:900;color:#fff;letter-spacing:-.02em}
+.hdr h1 em{font-style:normal;color:#FFC940}
+.hdr p{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+#app{padding:20px}
+/* FIELDS */
+.field-label{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;letter-spacing:.04em}
+.field{width:100%;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 14px;font-size:13px;color:#fff;margin-bottom:12px;outline:none;transition:border .2s;font-family:inherit}
+.field:focus{border-color:#FFC940;background:rgba(255,201,64,.05)}
+.field::placeholder{color:rgba(255,255,255,.25)}
+.tag-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.tag{font-size:10.5px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:4px 12px;color:rgba(255,255,255,.7)}
+.rules-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;margin-bottom:18px}
+.rule{font-size:11px;color:rgba(255,255,255,.5);padding:3px 0;display:flex;align-items:center;gap:7px}
+.rule em{color:#FFC940;font-style:normal}
+/* BUTTONS */
+.btn-main{width:100%;background:linear-gradient(135deg,#FFC940,#FF9F00);color:#111;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;letter-spacing:.02em;font-family:inherit;transition:transform .15s,box-shadow .15s}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,201,64,.35)}
+.btn-again{width:100%;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);color:#fff;border-radius:12px;padding:13px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+/* QUIZ */
+.quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.q-counter{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.04em}
+.q-counter b{color:#fff;font-size:14px}
+.timer-box{background:rgba(255,201,64,.12);border:1.5px solid rgba(255,201,64,.3);border-radius:20px;padding:4px 14px;font-size:13px;font-weight:800;color:#FFC940;font-variant-numeric:tabular-nums}
+.pdots{display:flex;gap:5px;justify-content:center;margin-bottom:16px}
+.pd{width:24px;height:5px;border-radius:3px;background:rgba(255,255,255,.1);transition:all .3s}
+.pd.done{background:#FFC940}
+.pd.curr{background:#fff;width:34px}
+.q-meta{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:7px}
+.q-text{font-size:15.5px;font-weight:800;color:#fff;line-height:1.4;margin-bottom:18px;min-height:52px}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt-btn{border:none;border-radius:14px;padding:14px 12px;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;font-family:inherit;position:relative;overflow:hidden;min-height:64px;line-height:1.3;transition:transform .12s}
+.opt-btn:hover{transform:scale(1.02);filter:brightness(1.1)}
+.opt-A{background:linear-gradient(135deg,#E8362B,#C0392B)}
+.opt-B{background:linear-gradient(135deg,#2563EB,#1D4ED8)}
+.opt-C{background:linear-gradient(135deg,#D97706,#B45309)}
+.opt-D{background:linear-gradient(135deg,#059669,#047857)}
+.opt-shape{width:28px;height:28px;border-radius:7px;background:rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0}
+.correct{background:linear-gradient(135deg,#10B981,#059669)!important}
+.wrong{background:linear-gradient(135deg,#4B5563,#374151)!important;opacity:.5}
+/* RESULT */
+.score-ring{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#FFC940,#FF9F00);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 0 0 6px rgba(255,201,64,.15),0 0 40px rgba(255,201,64,.3);animation:popIn .5s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.big-num{font-size:42px;font-weight:900;color:#111;line-height:1}
+.of-ten{font-size:13px;font-weight:700;color:rgba(0,0,0,.4)}
+.r-name{font-size:19px;font-weight:800;color:#fff;text-align:center;margin-bottom:4px}
+.r-msg{font-size:12px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:8px}
+.r-time{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:5px 16px;font-size:12px;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:16px}
+.breakdown{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;margin-bottom:14px}
+.breakdown h4{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.3);margin-bottom:10px}
+.dot-row{display:flex;gap:6px;flex-wrap:wrap}
+.qdot{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800}
+.qdot.ok{background:#D1FAE5;color:#065F46}
+.qdot.no{background:#FEE2E2;color:#991B1B}
+.submit-st{font-size:11px;text-align:center;color:rgba(255,255,255,.4);margin-bottom:14px;min-height:18px}
+.submit-st.ok{color:#34D399}
+.submit-st.err{color:#F87171}
+/* TOAST */
+.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-120px);z-index:9999;border-radius:50px;padding:12px 28px;font-size:16px;font-weight:800;display:flex;align-items:center;gap:10px;transition:transform .25s cubic-bezier(.175,.885,.32,1.275),opacity .25s;opacity:0;pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast.correct{background:linear-gradient(135deg,#10B981,#059669);color:#fff}
+.toast.wrong{background:linear-gradient(135deg,#EF4444,#DC2626);color:#fff}
+/* PARTICLES */
+.particle{position:fixed;border-radius:3px;pointer-events:none;z-index:9998;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(800deg);opacity:0}}
+.card-foot{background:rgba(0,0,0,.3);border-top:1px solid rgba(255,255,255,.04);padding:8px 18px;text-align:center}
+.card-foot span{font-size:8.5px;color:rgba(255,255,255,.2)}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"><span id="toast-icon"></span><span id="toast-msg"></span></div>
+
+<div class="card">
+  <div class="hdr">
+    <div class="week-pill">🎯 WEEK 4 · FUN FRIDAY</div>
+    <span class="hdr-emoji">🏷️</span>
+    <h1>Logos &amp; <em>Brands</em></h1>
+    <p>Altudo · 10 questions · Test your brand radar!</p>
+  </div>
+
+  <div id="app"><!-- filled by JS --></div>
+
+  <div class="card-foot"><span>Altudo Fun Friday · Week 4 · Logos &amp; Brands · 🇮🇳 🇺🇸 🇨🇦 🌍</span></div>
+</div>
+
+<script>
+/* ── CONFIG ─────────────────────────────────────── */
+const AIRTABLE_TOKEN = 'patv9xZk9SfFbGY9Y.430aa381141aedc05aedae1f47c37aeaf0a2c27b614bccb74b0789c3024d0030';
+const AIRTABLE_BASE  = 'app94kDC0O47m8736';
+const AIRTABLE_TABLE = 'Results';
+const QUIZ_WEEK      = 'Week 4 - Logos & Brands';
+const STORAGE_KEY    = 'funfriday-logos-w4';
+
+// ⏰ TIME RESTRICTION: change to true when sharing with employees
+// When true: quiz only opens 5:00 PM – 6:00 PM IST
+const TIME_RESTRICTED = false;
+
+/* ── QUESTIONS ──────────────────────────────────── */
+const QS = [
+  {r:'🌍 Global · Hidden Symbol',   q:"The FedEx logo has a hidden symbol between 'E' and 'x'. What is it?",             o:['A star','An arrow','A checkmark','A lightning bolt'],ans:1},
+  {r:'🇮🇳 India · Mascot',           q:"What is the name of Air India's iconic turbaned mascot, introduced in 1946?",      o:['The Raja','The Sultan','The Maharaja','The Nawab'],ans:2},
+  {r:'🌍 Global · Logo Meaning',     q:"The Amazon logo arrow runs from 'a' to 'z'. What else does it represent?",         o:['A river flowing east','A smile','A delivery route',"The founder's initials"],ans:1},
+  {r:'🇨🇦 Canada · Brand Founder',   q:"Tim Hortons is named after co-founder Tim Horton. What sport did he play?",        o:['Basketball','Baseball','Ice Hockey','American Football'],ans:2},
+  {r:'🇺🇸 United States · Design',   q:"The Nike Swoosh was designed by Carolyn Davidson in 1971. How much was she paid?",  o:['$2','$35','$500','$1,000'],ans:1},
+  {r:'🇮🇳 India · Brand Name',       q:'What does the iconic dairy brand "Amul" stand for?',                               o:['Anand Milk Union Limited','Ahmedabad Milk Union Limited','Anand Milk Utility Limited','Amazing Milk Union Limited'],ans:0},
+  {r:'🌍 Global · Logo Character',   q:'The Starbucks logo features a mythological sea creature. What is it called?',      o:['Mermaid','Siren','Sea Goddess','Poseidon'],ans:1},
+  {r:'🇮🇳 India · Brand Logo',       q:'The Taj Hotels logo features the silhouette of which famous Indian landmark?',     o:['India Gate','Lotus Temple','Gateway of India','Qutub Minar'],ans:2},
+  {r:'🇨🇦 Canada · Hidden Meaning',  q:'The Lululemon logo looks like omega (Ω). What does it actually represent?',        o:['A horseshoe','The letter "L"',"A woman's face in profile",'A yoga pose'],ans:2},
+  {r:'🌍 Global · Logo Colors',      q:'How many colors are in the Google "G" icon (the circular app icon)?',              o:['2','3','4','5'],ans:2}
+];
+
+const SHAPES=['▲','◆','●','■'], OC=['opt-A','opt-B','opt-C','opt-D'];
+const COLS=['#FFC940','#10B981','#3B82F6','#F472B6','#A78BFA','#34D399','#FB923C'];
+let curr=0, score=0, answers=[], playerName='', playerEmail='', startMs=0, timerInterval, elapsed=0;
+
+/* ── RENDER WELCOME ─────────────────────────────── */
+function renderWelcome(){
+  document.getElementById('app').innerHTML = `
+    <div class="tag-row">
+      <span class="tag">🇮🇳 India</span>
+      <span class="tag">🇺🇸 United States</span>
+      <span class="tag">🇨🇦 Canada</span>
+      <span class="tag">🌍 Global</span>
+    </div>
+    <div class="field-label">YOUR NAME *</div>
+    <input class="field" id="inp-name" type="text" placeholder="Enter your full name" autocomplete="off">
+    <div class="field-label">WORK EMAIL * <span style="font-size:10px;color:rgba(255,255,255,.3);font-weight:400">(required — one submission per person)</span></div>
+    <input class="field" id="inp-email" type="email" placeholder="name@altudo.co">
+    <div class="rules-box">
+      <div class="rule"><em>🏆</em> 10 questions · 1 point each · 10 max</div>
+      <div class="rule"><em>⚡</em> Fastest correct score wins</div>
+      <div class="rule"><em>⏱</em> Timer starts on Let's Go</div>
+    </div>
+    <button class="btn-main" id="start-btn">🚀 &nbsp; Let's Go!</button>`;
+  document.getElementById('start-btn').addEventListener('click', startQuiz);
+}
+
+/* ── RENDER ALREADY SUBMITTED ───────────────────── */
+function renderAlready(sc, tm){
+  document.getElementById('app').innerHTML = `
+    <div style="text-align:center;padding:10px 0">
+      <div style="font-size:52px;margin-bottom:12px">✅</div>
+      <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:8px">Already Submitted!</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:20px">Only one submission per person is allowed.</div>
+      <div style="background:rgba(255,201,64,.1);border:1px solid rgba(255,201,64,.3);border-radius:12px;padding:16px;margin-bottom:16px">
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">YOUR SCORE</div>
+        <div style="font-size:36px;font-weight:900;color:#FFC940">${sc}/10</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-top:4px">⏱ ${tm}</div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.3)">Check the dashboard for the leaderboard 🏆</div>
+    </div>`;
+}
+
+/* ── START QUIZ ─────────────────────────────────── */
+function startQuiz(){
+  playerName  = (document.getElementById('inp-name').value || '').trim();
+  playerEmail = (document.getElementById('inp-email').value || '').trim().toLowerCase();
+  if(!playerName){ alert('Please enter your name.'); return; }
+  if(!playerEmail){ alert('Work email is required.'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(playerEmail)){ alert('Please enter a valid email address.'); return; }
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if(saved){ const d=JSON.parse(saved); renderAlready(d.score,d.time); return; }
+  curr=0; score=0; answers=[];
+  renderQuiz();
+}
+
+/* ── RENDER QUIZ ────────────────────────────────── */
+function renderQuiz(){
+  const q = QS[curr];
+  const dots = QS.map((_,i)=>`<div class="pd${i<curr?' done':i===curr?' curr':''}"></div>`).join('');
+  document.getElementById('app').innerHTML = `
+    <div class="quiz-top">
+      <div class="q-counter">Q <b>${curr+1}</b> / 10</div>
+      <div class="timer-box" id="timer-box">0:00</div>
+    </div>
+    <div class="pdots">${dots}</div>
+    <div class="q-meta">${q.r}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="opts-grid" id="opts-grid">
+      ${q.o.map((o,i)=>`<button class="opt-btn ${OC[i]}" id="opt${i}">
+        <div class="opt-shape">${SHAPES[i]}</div><div>${o}</div>
+      </button>`).join('')}
+    </div>`;
+  // Attach option click handlers
+  q.o.forEach((_,i)=>{
+    document.getElementById('opt'+i).addEventListener('click', ()=>pick(i));
+  });
+  // Start or resume timer
+  if(curr===0){
+    startMs = Date.now();
+    timerInterval = setInterval(()=>{
+      elapsed = Math.floor((Date.now()-startMs)/1000);
+      const m=Math.floor(elapsed/60), s=elapsed%60;
+      const el=document.getElementById('timer-box');
+      if(el) el.textContent=`${m}:${s.toString().padStart(2,'0')}`;
+    }, 500);
+  }
+}
+
+/* ── PICK ANSWER ────────────────────────────────── */
+function pick(idx){
+  const q = QS[curr];
+  const correct = idx===q.ans;
+  if(correct) score++;
+  answers.push(correct);
+  // Show feedback
+  document.querySelectorAll('.opt-btn').forEach(b=>b.onclick=null);
+  document.getElementById('opt'+idx).classList.add(correct?'correct':'wrong');
+  if(!correct) document.getElementById('opt'+q.ans).classList.add('correct');
+  showToast(correct);
+  setTimeout(()=>{
+    curr++;
+    if(curr < QS.length) renderQuiz();
+    else finish();
+  }, 900);
+}
+
+/* ── TOAST ──────────────────────────────────────── */
+function showToast(ok){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-icon').textContent = ok?'🎉':'❌';
+  document.getElementById('toast-msg').textContent  = ok?'Correct!':'Wrong!';
+  t.className='toast '+(ok?'correct':'wrong')+' show';
+  if(ok) burst();
+  setTimeout(()=>t.className='toast',1200);
+}
+function burst(){
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    const sz=5+Math.random()*6;
+    p.style.cssText=`left:${20+Math.random()*60}%;top:10%;width:${sz}px;height:${sz}px;background:${COLS[Math.floor(Math.random()*COLS.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${.9+Math.random()*.8}s;animation-delay:${Math.random()*.2}s`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2000);
+  }
+}
+
+/* ── FINISH ─────────────────────────────────────── */
+function finish(){
+  clearInterval(timerInterval);
+  const m=Math.floor(elapsed/60), s=elapsed%60;
+  const timeStr=`${m}m ${s.toString().padStart(2,'0')}s`;
+  const dots=answers.map((ok,i)=>`<div class="qdot ${ok?'ok':'no'}">${i+1}</div>`).join('');
+  const msg=score===10?'🏆 Perfect Score!':score>=8?'🔥 Excellent!':score>=6?'👏 Great effort!':'💪 Keep practising!';
+  document.getElementById('app').innerHTML = `
+    <div style="text-align:center;margin-bottom:16px">
+      <div class="score-ring"><div class="big-num">${score}</div><div class="of-ten">/ 10</div></div>
+      <div class="r-name">${playerName}</div>
+      <div class="r-msg">${msg}</div>
+      <div class="r-time">⏱ ${timeStr}</div>
+    </div>
+    <div class="breakdown"><h4>Question breakdown</h4><div class="dot-row">${dots}</div></div>
+    <div class="submit-st" id="submit-st">Submitting score…</div>
+    <button class="btn-again" onclick="location.reload()">↩ &nbsp; Play Again</button>`;
+  if(score===10) bigConfetti();
+  submitScore(timeStr);
+}
+
+function bigConfetti(){
+  for(let i=0;i<70;i++){
+    const p=document.createElement('div'); p.className='particle';
+    const sz=6+Math.random()*7;
+    p.style.cssText=`left:${Math.random()*100}%;top:-10px;width:${sz}px;height:${sz}px;background:${COLS[Math.floor(Math.random()*COLS.length)]};border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${1.5+Math.random()*1.5}s;animation-delay:${Math.random()*.5}s`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),4000);
+  }
+}
+
+/* ── SUBMIT ─────────────────────────────────────── */
+async function submitScore(timeStr){
+  const el = document.getElementById('submit-st');
+  if(AIRTABLE_TOKEN==='YOUR_AIRTABLE_PAT_HERE'){
+    el.textContent='⚠️ Airtable token not set.'; el.className='submit-st err'; return;
+  }
+  try{
+    const res = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent(AIRTABLE_TABLE)}`,{
+      method:'POST',
+      headers:{Authorization:'Bearer '+AIRTABLE_TOKEN,'Content-Type':'application/json'},
+      body:JSON.stringify({records:[{fields:{Name:playerName,Email:playerEmail,Score:score,Duration:timeStr,Week:QUIZ_WEEK}}]})
+    });
+    if(res.ok){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({score,time:timeStr}));
+      el.textContent='✅ Score submitted! Check the dashboard.'; el.className='submit-st ok';
+    } else {
+      const d=await res.json().catch(()=>({}));
+      el.textContent=`⚠️ ${d?.error?.message||'Submit failed'}`; el.className='submit-st err';
+    }
+  } catch(e){ el.textContent='⚠️ Network error.'; el.className='submit-st err'; }
+}
+
+/* ── BOOT ───────────────────────────────────────── */
+function getIST(){
+  const now=new Date(), utc=now.getTime()+now.getTimezoneOffset()*60000;
+  return new Date(utc+5.5*3600000);
+}
+if(TIME_RESTRICTED){
+  const ist=getIST(), h=ist.getHours(), m=ist.getMinutes(), tot=h*60+m;
+  if(tot < 17*60){
+    // Before 5 PM — show countdown
+    const open=new Date(ist); open.setHours(17,0,0,0);
+    document.getElementById('app').innerHTML=`
+      <div style="text-align:center;padding:16px 0">
+        <div style="font-size:44px;margin-bottom:10px">⏰</div>
+        <div style="font-size:19px;font-weight:800;color:#fff;margin-bottom:6px">Quiz Not Started Yet</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:16px">Opens at <span style="color:#FFC940;font-weight:700">5:00 PM – 6:00 PM IST</span></div>
+        <div style="background:rgba(255,201,64,.1);border:1px solid rgba(255,201,64,.3);border-radius:12px;padding:14px;margin-bottom:14px">
+          <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Opens in</div>
+          <div id="cd" style="font-size:30px;font-weight:900;color:#FFC940;font-variant-numeric:tabular-nums">--:--:--</div>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.2)">Page auto-refreshes when quiz opens</div>
+      </div>`;
+    setInterval(()=>{
+      const diff=open-getIST(); if(diff<=0){location.reload();return;}
+      const hh=Math.floor(diff/3600000),mm=Math.floor((diff%3600000)/60000),ss=Math.floor((diff%60000)/1000);
+      const el=document.getElementById('cd');
+      if(el) el.textContent=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+    },1000);
+  } else if(tot >= 18*60){
+    // After 6 PM — closed
+    document.getElementById('app').innerHTML=`
+      <div style="text-align:center;padding:16px 0">
+        <div style="font-size:44px;margin-bottom:10px">🔒</div>
+        <div style="font-size:19px;font-weight:800;color:#fff;margin-bottom:6px">Quiz Window Closed</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:14px">The quiz was open from <span style="color:#FFC940;font-weight:700">5:00 – 6:00 PM IST</span></div>
+        <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;font-size:11px;color:rgba(255,255,255,.4)">Check the dashboard for your results 🏆</div>
+      </div>`;
+  } else {
+    renderWelcome(); // Within 5–6 PM
+  }
+} else {
+  renderWelcome(); // No restriction — open always
+}
+</script>
+</body>
+</html>
