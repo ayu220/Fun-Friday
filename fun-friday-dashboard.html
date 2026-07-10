@@ -2,76 +2,94 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Fun Friday — Combined Dashboard</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0D0D1A;font-family:'Inter',sans-serif;min-height:100vh;padding:20px}
-.wrap{max-width:900px;margin:0 auto}
+body{background:#0A0F1E;font-family:'Inter',sans-serif;min-height:100vh;padding:16px}
+.wrap{max-width:1000px;margin:0 auto}
 
 /* HEADER */
-.hdr{background:linear-gradient(135deg,#111827,#1a2744);border-radius:14px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;border:1px solid rgba(255,255,255,.06)}
-.hdr-left .pill{display:inline-block;background:rgba(255,201,64,.12);border:1px solid rgba(255,201,64,.3);border-radius:20px;padding:2px 12px;font-size:9px;font-weight:700;color:#FFC940;letter-spacing:.08em;margin-bottom:6px}
+.hdr{background:linear-gradient(135deg,#111827,#1a2744);border-radius:14px;padding:16px 22px;
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,.07)}
+.hdr-left .pill{display:inline-block;background:rgba(255,201,64,.12);border:1px solid rgba(255,201,64,.3);
+  border-radius:20px;padding:2px 12px;font-size:9px;font-weight:700;color:#FFC940;letter-spacing:.08em;margin-bottom:6px}
 .hdr-left h1{font-size:20px;font-weight:800;color:#fff}
 .hdr-left h1 span{color:#FFC940}
 .hdr-left p{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
-.refresh-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:rgba(255,255,255,.6);padding:8px 16px;font-size:11px;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;transition:background .2s}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.refresh-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  color:rgba(255,255,255,.6);padding:8px 14px;font-size:11px;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;gap:5px;transition:background .2s}
 .refresh-btn:hover{background:rgba(255,255,255,.12)}
-.spin.on{animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+.spin.on{animation:spin 1s linear infinite} @keyframes spin{to{transform:rotate(360deg)}}
+
+/* CONFIG WARNING */
+.cfg-warn{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:10px;
+  padding:10px 16px;margin-bottom:12px;font-size:11px;color:#FCA5A5;display:none}
+.cfg-warn.show{display:block}
 
 /* STATS */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.stat{background:#161B2E;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px;text-align:center}
-.stat .val{font-size:26px;font-weight:800;color:#fff;display:block}
-.stat .val.gold{color:#FFC940}
-.stat .lbl{font-size:9px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;display:block}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.stat{background:#161B2E;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;text-align:center}
+.stat .v{font-size:22px;font-weight:800;color:#fff;display:block}
+.stat .v.gold{color:#FFC940}
+.stat .l{font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;display:block}
 
 /* TABS */
-.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.tab{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 16px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;font-family:inherit}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tab{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  padding:7px 14px;font-size:11px;font-weight:600;color:rgba(255,255,255,.5);cursor:pointer;
+  font-family:inherit;transition:all .2s}
 .tab:hover{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8)}
 .tab.active{background:#FFC940;border-color:#FFC940;color:#111}
 
 /* TABLE */
 .tbl-card{background:#161B2E;border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:hidden}
-.tbl-hdr{padding:12px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.05)}
-.tbl-hdr h2{font-size:13px;font-weight:700;color:#fff}
-.live{display:flex;align-items:center;gap:5px;font-size:9.5px;color:rgba(255,255,255,.35)}
+.tbl-top{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,.05)}
+.tbl-top h2{font-size:13px;font-weight:700;color:#fff}
+.live{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(255,255,255,.3)}
 .dot{width:6px;height:6px;border-radius:50%;background:#10B981;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
 table{width:100%;border-collapse:collapse}
-thead th{padding:9px 16px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.3);text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+thead th{padding:8px 12px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  color:rgba(255,255,255,.25);text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
 thead th.c{text-align:center}
-tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s}
-tbody tr:hover{background:rgba(255,255,255,.03)}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.04)}
 tbody tr:last-child{border-bottom:none}
-td{padding:10px 16px;vertical-align:middle}
-.rank{font-size:11px;font-weight:700;color:rgba(255,255,255,.25);text-align:center;width:40px}
-.medal{font-size:18px;text-align:center}
-.nm{font-size:13px;font-weight:700;color:#fff;display:block}
-.em{font-size:10px;color:rgba(255,255,255,.3);display:block;margin-top:1px}
-.week-tag{display:inline-block;font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;margin-top:3px}
-.wt-riddles{background:rgba(99,102,241,.2);color:#A5B4FC}
-.wt-logos{background:rgba(255,201,64,.15);color:#FFC940}
-.wt-food{background:rgba(16,185,129,.15);color:#34D399}
-.time-c{font-size:12px;color:rgba(255,255,255,.4);text-align:center;font-variant-numeric:tabular-nums}
-.score-c{text-align:center}
-.badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 12px;border-radius:20px}
-.s10{background:#FFF3CD;color:#92700A}
-.s9{background:#D1FAE5;color:#065F46}
-.s8{background:#DBEAFE;color:#1E40AF}
-.s7{background:#F3F4F6;color:#4B5563}
-.slo{background:#F3F4F6;color:#9CA3AF}
-.total-c{text-align:center}
-.total{font-size:14px;font-weight:800;color:#FFC940;display:block}
-.total-sub{font-size:9px;color:rgba(255,255,255,.25);display:block}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+td{padding:9px 12px;vertical-align:middle}
 
-.empty-row td{padding:40px;text-align:center;color:rgba(255,255,255,.3);font-size:13px}
-.footer{padding:8px 18px;text-align:right}
-.footer span{font-size:8.5px;color:rgba(255,255,255,.2)}
+.rk-cell{font-size:14px;text-align:center;width:40px}
+.nm{font-size:13px;font-weight:700;color:#fff;display:block}
+.em{font-size:9px;color:rgba(255,255,255,.25);display:block;margin-top:1px}
+.badges{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.qb{font-size:8.5px;font-weight:600;padding:1px 7px;border-radius:8px}
+.qb1{background:rgba(99,102,241,.2);color:#A5B4FC}
+.qb2{background:rgba(16,185,129,.15);color:#34D399}
+.qb3{background:rgba(251,146,60,.15);color:#FB923C}
+.qb4{background:rgba(255,201,64,.15);color:#FFC940}
+
+.sc-cell{text-align:center}
+.sc{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px;min-width:36px}
+.s10{background:#FFF3CD;color:#92700A} .s9{background:#D1FAE5;color:#065F46}
+.s8{background:#DBEAFE;color:#1E40AF} .s7{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
+.s6,.s5,.s4,.s3,.s2{background:rgba(255,255,255,.05);color:rgba(255,255,255,.35)}
+.sd{color:rgba(255,255,255,.12);font-size:14px;text-align:center;display:block}
+
+.tot-cell{text-align:center}
+.tot{font-size:15px;font-weight:800;color:#FFC940;display:block}
+.tot-sub{font-size:8px;color:rgba(255,255,255,.25)}
+.tm-cell{font-size:11px;color:rgba(255,255,255,.4);text-align:center;font-variant-numeric:tabular-nums}
+.src-cell{font-size:8px;color:rgba(255,255,255,.2);text-align:center}
+
+.empty td{padding:40px;text-align:center;color:rgba(255,255,255,.25);font-size:13px}
+.foot-bar{padding:8px 16px;border-top:1px solid rgba(255,255,255,.04)}
+.foot-bar span{font-size:8px;color:rgba(255,255,255,.2)}
 </style>
 </head>
 <body>
@@ -79,184 +97,281 @@ td{padding:10px 16px;vertical-align:middle}
 
   <div class="hdr">
     <div class="hdr-left">
-      <div class="pill">🎯 ALTUDO FUN FRIDAY — LIVE RESULTS</div>
+      <div class="pill">🏆 ALTUDO FUN FRIDAY — SEASON 2026</div>
       <h1>Fun Friday <span>Combined Dashboard</span></h1>
-      <p id="hdr-sub">Loading results…</p>
+      <p id="hdr-sub">⚽ Week 1 FIFA (embedded) + 🧩 Week 2 Riddles + 🍕 Week 3 Food + 🎯 Week 4 Logos (Airtable live)</p>
     </div>
-    <button class="refresh-btn" onclick="loadAll()">
-      <span class="spin" id="spin">↻</span> Refresh
-    </button>
+    <div class="hdr-right">
+      <button class="refresh-btn" onclick="loadAll()">
+        <span class="spin" id="spin">↻</span> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="cfg-warn" id="cfg-warn">
+    ⚠️ <strong>Airtable token not set.</strong> Open this file in Notepad, find <code>YOUR_AIRTABLE_PAT_HERE</code> and replace with your token. Week 1 FIFA data will still show (it's embedded).
   </div>
 
   <div class="stats">
-    <div class="stat"><span class="val" id="s-players">—</span><span class="lbl">Total Players</span></div>
-    <div class="stat"><span class="val gold" id="s-top">—</span><span class="lbl">Top Score</span></div>
-    <div class="stat"><span class="val" id="s-avg">—</span><span class="lbl">Avg Score</span></div>
-    <div class="stat"><span class="val gold" id="s-weeks">—</span><span class="lbl">Quizzes Done</span></div>
+    <div class="stat"><span class="v" id="s-players">—</span><span class="l">Participants</span></div>
+    <div class="stat"><span class="v gold" id="s-leader">—</span><span class="l">Season Leader</span></div>
+    <div class="stat"><span class="v gold" id="s-top">—</span><span class="l">Highest Total</span></div>
+    <div class="stat"><span class="v" id="s-multi">—</span><span class="l">All 3 Quizzes</span></div>
+    <div class="stat"><span class="v" id="s-logos">—</span><span class="l">Logos Entries</span></div>
   </div>
 
-  <div class="tabs" id="tabs">
-    <button class="tab active" onclick="switchTab('all',this)">🏆 All Quizzes</button>
-    <button class="tab" onclick="switchTab('Week 2 - Riddles',this)">🧩 Week 2 — Riddles</button>
-    <button class="tab" onclick="switchTab('Week 3 - Food',this)">🍕 Week 3 — Food</button>
-    <button class="tab" onclick="switchTab('Week 4 - Logos & Brands',this)">🎯 Week 4 — Logos</button>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('all',this)">🏆 Combined (All Quizzes)</button>
+    <button class="tab" onclick="switchTab('w1',this)">⚽ Week 1 — FIFA</button>
+    <button class="tab" onclick="switchTab('w2',this)">🧩 Week 2 — Riddles</button>
+    <button class="tab" onclick="switchTab('w3',this)">🍕 Week 3 — Food</button>
+    <button class="tab" onclick="switchTab('w4',this)">🎯 Week 4 — Logos</button>
   </div>
 
   <div class="tbl-card">
-    <div class="tbl-hdr">
-      <h2 id="tbl-title">All Quizzes — Combined Leaderboard</h2>
-      <div class="live"><span class="dot"></span> auto-updates every 10s</div>
+    <div class="tbl-top">
+      <h2 id="tbl-title">Combined Leaderboard</h2>
+      <div class="live"><span class="dot"></span> Live · auto-updates every 15s</div>
     </div>
     <table>
-      <thead>
-        <tr>
-          <th class="c" style="width:44px">#</th>
-          <th>Participant</th>
-          <th class="c" style="width:110px">⏱ Time</th>
-          <th class="c" style="width:80px">Score</th>
-          <th class="c" style="width:80px">Total</th>
-        </tr>
-      </thead>
-      <tbody id="tbody">
-        <tr class="empty-row"><td colspan="5">Loading…</td></tr>
-      </tbody>
+      <thead id="thead"></thead>
+      <tbody id="tbody"><tr class="empty"><td colspan="9">Loading…</td></tr></tbody>
     </table>
-    <div class="footer"><span id="last-upd"></span></div>
+    <div class="foot-bar"><span id="last-upd"></span></div>
   </div>
 
 </div>
 
 <script>
-const AIRTABLE_TOKEN = 'patv9xZk9SfFbGY9Y.430aa381141aedc05aedae1f47c37aeaf0a2c27b614bccb74b0789c3024d0030';
-const AIRTABLE_BASE  = 'app94kDC0O47m8736';
-const AIRTABLE_TABLE = 'Results';
+/* ─── CONFIG ─────────────────────────────────── */
+const AT_TOKEN = 'YOUR_AIRTABLE_PAT_HERE';
+const AT_BASE  = 'app94kDC0O47m8736';
+const AT_TABLE = 'Results';
 
-const WEEKS = {
-  'Week 2 - Riddles':        {label:'🧩 Riddles',  cls:'wt-riddles'},
-  'Week 3 - Food':           {label:'🍕 Food',      cls:'wt-food'},
-  'Week 4 - Logos & Brands': {label:'🎯 Logos',     cls:'wt-logos'},
-};
+/* ─── WEEK 1 FIFA — EMBEDDED (from MS Forms Excel) ── */
+const FIFA = [
+  {name:'Ragini Kumari',     email:'ragini.kumari@altudo.co',    score:10, secs:60},
+  {name:'Prabhav Yadav',     email:'prabhav.yadav@altudo.co',    score:10, secs:100},
+  {name:'Om Kumar Singh',    email:'om.singh@altudo.co',          score:10, secs:125},
+  {name:'Una Verhoeven',     email:'una.verhoeven@altudo.co',     score:10, secs:173},
+  {name:'Himanshi Singhal',  email:'himanshi.singhal@altudo.co', score:10, secs:175},
+  {name:'Anadeep Kaur',      email:'anadeep.kaur@altudo.co',     score:10, secs:293},
+  {name:'Ankita Raj',        email:'ankita.raj@altudo.co',        score:9,  secs:138},
+  {name:'Siddhant Chaudhary',email:'siddhant.chaudhary@altudo.co',score:9, secs:224},
+  {name:'Priyal Intwala',    email:'priyal.intwala@altudo.co',   score:9,  secs:257},
+  {name:'Manish Borkar',     email:'manish.borkar@altudo.co',    score:9,  secs:259},
+  {name:'Abiraj Singh',      email:'abiraj.singh@altudo.co',     score:9,  secs:267},
+  {name:'Md Fazal',          email:'md.fazal@altudo.co',         score:7,  secs:163},
+  {name:'Sohit Wankhade',    email:'sohit.wankhade@altudo.co',   score:7,  secs:154},
+  {name:'Smriti Agarwal',    email:'smriti.agarwal@altudo.co',   score:2,  secs:57},
+];
 
-let allRecords=[], activeTab='all';
+/* ─── HELPERS ─────────────────────────────────── */
 
-function toSecs(str){
-  if(!str) return 99999;
-  const m=str.match(/(\d+)m\s*(\d+)s/); if(m) return +m[1]*60+ +m[2];
-  const s=str.match(/^(\d+)s$/); if(s) return +s[1];
-  return 99999;
+
+function weekOf(w){
+  if(!w) return null;
+  const u = w.trim().toLowerCase()
+    .replace(/\u2014/g,'-')   // em dash → hyphen
+    .replace(/\u2013/g,'-')   // en dash → hyphen
+    .replace(/\s+/g,' ');     // multiple spaces → single space
+  if(u.includes('riddle') || u.includes('week 2')) return 'w2';
+  if(u.includes('food')   || u.includes('week 3')) return 'w3';
+  if(u.includes('logo')   || u.includes('brand') || u.includes('week 4')) return 'w4';
+  return null;
+}
+function toSecs(s){
+  if(!s) return 0;
+  const m=s.match(/(\d+)m\s*(\d+)s/); if(m) return +m[1]*60+ +m[2];
+  const q=s.match(/0*m\s*(\d+)s/);    if(q) return +q[1];
+  const r=s.match(/^(\d+)s/);          if(r) return +r[1];
+  return 0;
+}
+function fmtS(s){
+  if(!s) return '—';
+  const m=Math.floor(s/60),sec=s%60;
+  return m?`${m}m ${String(sec).padStart(2,'0')}s`:`${sec}s`;
+}
+function ekey(r){ return (r.email||r.name||'').toLowerCase().trim(); }
+function sc(s,cls){
+  if(s==null) return `<td class="sc-cell"><span class="sd">—</span></td>`;
+  return `<td class="sc-cell"><span class="sc ${cls}">${s}/10</span></td>`;
+}
+function scClass(s){ return s===10?'s10':s>=9?'s9':s>=8?'s8':s>=7?'s7':`s${s}`; }
+
+/* ─── STATE ──────────────────────────────────── */
+let atRecs=[], activeTab='all', tokenOK=false;
+
+/* ─── MERGE ──────────────────────────────────── */
+function buildMerged(){
+  const map={};
+  // FIFA first
+  FIFA.forEach(r=>{
+    const k=ekey(r);
+    map[k]={name:r.name,email:r.email,w1:{score:r.score,secs:r.secs},w2:null,w3:null,w4:null,src1:'Excel'};
+  });
+  // Airtable records
+  atRecs.forEach(r=>{
+    const k=ekey(r), slot=weekOf(r.week);
+    if(!slot) return;
+    if(!map[k]) map[k]={name:r.name,email:r.email,w1:null,w2:null,w3:null,w4:null,src1:''};
+    if(!map[k].name||map[k].name==='—') map[k].name=r.name;
+    map[k][slot]={score:r.score,secs:r.secs,time:r.time};
+  });
+  return Object.values(map).map(p=>{
+    const ws=[p.w1,p.w2,p.w3,p.w4];
+    const total=ws.reduce((a,w)=>a+(w?.score||0),0);
+    const tsecs=ws.reduce((a,w)=>a+(w?.secs||0),0);
+    const quizzes=ws.filter(Boolean).length;
+    return{...p,total,tsecs,quizzes};
+  });
 }
 
+/* ─── LOAD ───────────────────────────────────── */
 async function loadAll(){
-  const spin=document.getElementById('spin');
-  spin.classList.add('on');
-  try{
-    let records=[], offset='';
-    do{
-      const url=`https://api.airtable.com/v0/${AIRTABLE_BASE}/${encodeURIComponent(AIRTABLE_TABLE)}?pageSize=100`+(offset?`&offset=${offset}`:'');
-      const res=await fetch(url,{headers:{Authorization:'Bearer '+AIRTABLE_TOKEN}});
-      const data=await res.json();
-      if(!res.ok) throw new Error(data?.error?.message||'API error');
-      records=[...records,...(data.records||[])];
-      offset=data.offset||'';
-    } while(offset);
-
-    allRecords=records.map(r=>({
-      name: r.fields.Name||'—',
-      email:r.fields.Email||'',
-      score:Number(r.fields.Score)||0,
-      time: r.fields.Duration||'—',
-      week: r.fields.Week||'Unknown',
-      secs: toSecs(r.fields.Duration),
-    }));
-
-    updateStats();
-    renderTable();
-    document.getElementById('last-upd').textContent='Updated '+new Date().toLocaleTimeString();
-    document.getElementById('hdr-sub').textContent=
-      `${allRecords.length} entries · ${new Set(allRecords.map(r=>r.week)).size} quiz weeks`;
-  }catch(e){
-    document.getElementById('tbody').innerHTML=
-      `<tr class="empty-row"><td colspan="5">⚠️ ${e.message}</td></tr>`;
+  document.getElementById('spin').classList.add('on');
+  if(AT_TOKEN==='YOUR_AIRTABLE_PAT_HERE'){
+    document.getElementById('cfg-warn').classList.add('show');
+    tokenOK=false;
+  } else {
+    document.getElementById('cfg-warn').classList.remove('show');
+    try{
+      let recs=[],offset='';
+      do{
+        const url=`https://api.airtable.com/v0/${AT_BASE}/${encodeURIComponent(AT_TABLE)}?pageSize=100`+(offset?`&offset=${offset}`:'');
+        const res=await fetch(url,{headers:{Authorization:'Bearer '+AT_TOKEN}});
+        const d=await res.json();
+        if(!res.ok) throw new Error(d?.error?.message||`HTTP ${res.status}`);
+        recs=[...recs,...(d.records||[])];
+        offset=d.offset||'';
+        tokenOK=true;
+      }while(offset);
+      atRecs=recs.map(r=>({
+        name:r.fields.Name||'—',
+        email:(r.fields.Email||'').toLowerCase().trim(),
+        score:Number(r.fields.Score)||0,
+        time:r.fields.Duration||'—',
+        secs:toSecs(r.fields.Duration),
+        week:r.fields.Week||'',
+      }));
+    }catch(e){
+      console.error('Airtable error:',e.message);
+      tokenOK=false;
+    }
   }
-  spin.classList.remove('on');
+  updateStats();
+  renderTable();
+  const m=buildMerged();
+  document.getElementById('hdr-sub').textContent=
+    `${m.length} participants · FIFA embedded + ${atRecs.length} Airtable entries · updated ${new Date().toLocaleTimeString()}`;
+  document.getElementById('last-upd').textContent=`Last updated: ${new Date().toLocaleTimeString()}`;
+  document.getElementById('spin').classList.remove('on');
 }
 
 function updateStats(){
-  const scores=allRecords.map(r=>r.score);
-  document.getElementById('s-players').textContent=new Set(allRecords.map(r=>r.name)).size;
-  document.getElementById('s-top').textContent=scores.length?Math.max(...scores)+'/10':'—';
-  document.getElementById('s-avg').textContent=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
-  document.getElementById('s-weeks').textContent=new Set(allRecords.map(r=>r.week)).size;
+  const m=buildMerged().sort((a,b)=>b.total-a.total||a.tsecs-b.tsecs);
+  document.getElementById('s-players').textContent=m.length;
+  document.getElementById('s-leader').textContent=m[0]?.name.split(' ')[0]||'—';
+  document.getElementById('s-top').textContent=m[0]?.total||'—';
+  document.getElementById('s-multi').textContent=m.filter(r=>r.quizzes>=3).length;
+  document.getElementById('s-logos').textContent=atRecs.filter(r=>weekOf(r.week)==='w4').length;
 }
 
-function switchTab(tab, el){
-  activeTab=tab;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+function switchTab(t,el){
+  activeTab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   renderTable();
 }
 
 function renderTable(){
-  const filtered = activeTab==='all' ? allRecords : allRecords.filter(r=>r.week===activeTab);
+  const TITLES={
+    all:'🏆 Combined Leaderboard — All Quizzes',
+    w1:'⚽ Week 1 — FIFA World Cup',
+    w2:'🧩 Week 2 — Riddles Quiz',
+    w3:'🍕 Week 3 — Food Around the World',
+    w4:'🎯 Week 4 — Logos & Brands (Live)',
+  };
+  document.getElementById('tbl-title').textContent=TITLES[activeTab];
 
   if(activeTab==='all'){
-    // Combined view: sum scores per person across all weeks
-    document.getElementById('tbl-title').textContent='All Quizzes — Combined Leaderboard';
-    const map={};
-    filtered.forEach(r=>{
-      if(!map[r.name]) map[r.name]={name:r.name,email:r.email,total:0,totalSecs:0,weeks:[]};
-      map[r.name].total+=r.score;
-      map[r.name].totalSecs+=r.secs;
-      map[r.name].weeks.push({week:r.week,score:r.score,time:r.time});
-    });
-    const rows=Object.values(map).sort((a,b)=>b.total-a.total||a.totalSecs-b.totalSecs);
-    if(!rows.length){emptyTable();return;}
+    document.getElementById('thead').innerHTML=`<tr>
+      <th class="c" style="width:44px">#</th>
+      <th>Participant</th>
+      <th class="c" style="width:72px">⚽ FIFA</th>
+      <th class="c" style="width:72px">🧩 Riddles</th>
+      <th class="c" style="width:72px">🍕 Food</th>
+      <th class="c" style="width:72px">🎯 Logos</th>
+      <th class="c" style="width:80px">Total</th>
+      <th class="c" style="width:90px">⏱ Time</th>
+    </tr>`;
+    const rows=buildMerged().sort((a,b)=>b.total-a.total||a.tsecs-b.tsecs);
+    if(!rows.length){empty(8);return;}
     document.getElementById('tbody').innerHTML=rows.map((r,i)=>{
-      const weekBadges=r.weeks.map(w=>{
-        const wk=WEEKS[w.week]||{label:w.week,cls:'wt-riddles'};
-        return `<span class="week-tag ${wk.cls}">${wk.label} ${w.score}/10</span>`;
-      }).join(' ');
-      const rankCell=i===0?'<td class="medal">🥇</td>':i===1?'<td class="medal">🥈</td>':i===2?'<td class="medal">🥉</td>':`<td class="rank">${i+1}</td>`;
-      return `<tr>${rankCell}
-        <td><span class="nm">${r.name}</span>${r.email?`<span class="em">${r.email}</span>`:''}
-        <div style="margin-top:4px">${weekBadges}</div></td>
-        <td class="time-c">${fmtSecs(r.totalSecs)}</td>
-        <td class="score-c">—</td>
-        <td class="total-c"><span class="total">${r.total}</span><span class="total-sub">pts total</span></td>
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`<span style="font-size:11px;color:rgba(255,255,255,.2)">${i+1}</span>`;
+      const bs=['w1','w2','w3','w4'].filter(k=>r[k])
+        .map(k=>`<span class="qb qb${k[1]}">${{w1:'⚽ FIFA',w2:'🧩 Riddles',w3:'🍕 Food',w4:'🎯 Logos'}[k]}</span>`).join('');
+      const w1s=r.w1?`<span class="sc ${scClass(r.w1.score)}">${r.w1.score}/10</span>`:'<span class="sd">—</span>';
+      const w2s=r.w2?`<span class="sc ${scClass(r.w2.score)}">${r.w2.score}/10</span>`:'<span class="sd">—</span>';
+      const w3s=r.w3?`<span class="sc ${scClass(r.w3.score)}">${r.w3.score}/10</span>`:'<span class="sd">—</span>';
+      const w4s=r.w4?`<span class="sc ${scClass(r.w4.score)}">${r.w4.score}/10</span>`:'<span class="sd">—</span>';
+      return `<tr>
+        <td class="rk-cell">${medal}</td>
+        <td><span class="nm">${r.name}</span><span class="em">${r.email}</span>
+            <div class="badges">${bs}</div></td>
+        <td class="sc-cell">${w1s}</td>
+        <td class="sc-cell">${w2s}</td>
+        <td class="sc-cell">${w3s}</td>
+        <td class="sc-cell">${w4s}</td>
+        <td class="tot-cell"><span class="tot">${r.total}</span><span class="tot-sub">${r.quizzes} quiz${r.quizzes!==1?'zes':''}</span></td>
+        <td class="tm-cell">${fmtS(r.tsecs)}</td>
       </tr>`;
     }).join('');
+
   } else {
-    // Single week view
-    const wk=WEEKS[activeTab]||{label:activeTab,cls:''};
-    document.getElementById('tbl-title').textContent=`${wk.label} — Individual Results`;
-    const rows=[...filtered].sort((a,b)=>b.score-a.score||a.secs-b.secs);
-    if(!rows.length){emptyTable();return;}
+    document.getElementById('thead').innerHTML=`<tr>
+      <th class="c" style="width:44px">#</th>
+      <th>Participant</th>
+      <th class="c" style="width:90px">Score</th>
+      <th class="c" style="width:100px">⏱ Time</th>
+      <th class="c" style="width:80px">Source</th>
+    </tr>`;
+    let rows;
+    if(activeTab==='w1'){
+      rows=FIFA.map(r=>({name:r.name,email:r.email,score:r.score,time:fmtS(r.secs),secs:r.secs,src:'Excel (MS Forms)'}))
+               .sort((a,b)=>b.score-a.score||a.secs-b.secs);
+    } else {
+      const slot=activeTab;
+      rows=atRecs.filter(r=>weekOf(r.week)===slot)
+                 .map(r=>({...r,src:'Airtable'}))
+                 .sort((a,b)=>b.score-a.score||a.secs-b.secs);
+      if(!rows.length && !tokenOK){
+        document.getElementById('tbody').innerHTML=
+          `<tr class="empty"><td colspan="5">⚠️ No Airtable data — check your token is set in the file</td></tr>`;
+        return;
+      }
+    }
+    if(!rows.length){empty(5);return;}
     document.getElementById('tbody').innerHTML=rows.map((r,i)=>{
-      const rankCell=i===0?'<td class="medal">🥇</td>':i===1?'<td class="medal">🥈</td>':i===2?'<td class="medal">🥉</td>':`<td class="rank">${i+1}</td>`;
-      const sc=r.score;
-      const cls=sc===10?'s10':sc===9?'s9':sc===8?'s8':sc===7?'s7':'slo';
-      return `<tr>${rankCell}
-        <td><span class="nm">${r.name}</span>${r.email?`<span class="em">${r.email}</span>`:''}</td>
-        <td class="time-c">${r.time}</td>
-        <td class="score-c"><span class="badge ${cls}">${sc}/10</span></td>
-        <td class="total-c"><span class="total" style="font-size:13px">${sc}</span></td>
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`<span style="font-size:11px;color:rgba(255,255,255,.2)">${i+1}</span>`;
+      return `<tr>
+        <td class="rk-cell">${medal}</td>
+        <td><span class="nm">${r.name}</span><span class="em">${r.email||''}</span></td>
+        <td class="sc-cell"><span class="sc ${scClass(r.score)}">${r.score}/10</span></td>
+        <td class="tm-cell">${r.time||fmtS(r.secs)}</td>
+        <td class="src-cell">${r.src||''}</td>
       </tr>`;
     }).join('');
   }
 }
 
-function fmtSecs(s){
-  if(s>=99999||!s) return '—';
-  const m=Math.floor(s/60),sec=s%60;
-  return m?`${m}m ${sec.toString().padStart(2,'0')}s`:`${sec}s`;
-}
-function emptyTable(){
+function empty(cols){
   document.getElementById('tbody').innerHTML=
-    '<tr class="empty-row"><td colspan="5">No results yet for this quiz 🎯</td></tr>';
+    `<tr class="empty"><td colspan="${cols}">No results yet 🎯</td></tr>`;
 }
 
 loadAll();
-setInterval(loadAll,10000);
+setInterval(loadAll,15000);
 </script>
 </body>
 </html>
